@@ -41,44 +41,44 @@ class LightbinApplicationTests {
 
     @Test
     void shouldReturn404ForNonExistingSnippet() throws Exception {
-        mockMvc.perform(get("/123abc"))
+        mockMvc.perform(get("/api/v1/snippets/123abc"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void shouldReturnCreatedSnippet() throws Exception {
-        mockMvc.perform(post("/123abc").content("Hello World"))
+        mockMvc.perform(post("/api/v1/snippets/123abc").content("Hello World"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     void shouldReturn409ForDuplicateOfSnippet() throws Exception {
-        mockMvc.perform(post("/123abc").content("Hello World"))
+        mockMvc.perform(post("/api/v1/snippets/123abc").content("Hello World"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(result -> mockMvc.perform(post("/123abc").content("Hello World"))
+                .andDo(result -> mockMvc.perform(post("/api/v1/snippets/123abc").content("Hello World"))
                         .andDo(print())
                         .andExpect(status().isConflict()));
     }
 
     @Test
     void shouldReturn200ForExistingSnippetWithoutLanguage() throws Exception {
-        mockMvc.perform(post("/123abc").content("Hello World"))
+        mockMvc.perform(post("/api/v1/snippets/123abc").content("Hello World"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(result -> mockMvc.perform(get("/123abc"))
+                .andDo(result -> mockMvc.perform(get("/api/v1/snippets/123abc"))
                         .andDo(print())
                         .andExpect(status().isOk()));
     }
 
     @Test
     void shouldReturn200ForExistingSnippetWithLanguage() throws Exception {
-        mockMvc.perform(post("/123abc").content("Hello World"))
+        mockMvc.perform(post("/api/v1/snippets/123abc").content("Hello World"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(result -> mockMvc.perform(get("/123abc/java"))
+                .andDo(result -> mockMvc.perform(get("/api/v1/snippets/123abc/java"))
                         .andDo(print())
                         .andExpect(status().isOk()));
     }
