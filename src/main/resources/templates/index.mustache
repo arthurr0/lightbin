@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>lightbin - simple service where you can post your snippets</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div class="modal ie-scroll-fix" id="modal-3" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content w-600">
+                    <a href="#" class="close" role="button" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    This website has been made by <a href="https://github.com/shitzuu">shitzuu</a> as a fun project to expand my knowledge about web development.
+                    <br>
+                    <br>
+                    You can post your snippets there, but you need to know that your snippets are not stored permanently, because this project can be turned off in any moment. Also, there is no currently any security implementation like JWT tokens to protect your snippet or something.
+                </div>
+            </div>
+        </div>
+        <div class="page-wrapper with-navbar h-full w-full">
+            <div class="sticky-alerts"></div>
+            <nav class="navbar">
+                <a href="#" class="navbar-brand">
+                    <p>lightbin</p>
+                </a>
+                <form class="form-inline d-none d-md-flex mr-auto">
+                    <button class="btn btn-primary text-left" onclick="location.href='#modal-3'" type="button">About</button>
+                    <button class="btn btn-primary text-left" onclick="location.href='mailto:contact@shitzuu.dev'" type="button">Contact</button>
+                </form>
+                <form class="form-inline d-none d-md-flex ml-auto">
+                    <button id="theme-toggler" class="btn text-right" type="button" onclick="halfmoon.toggleDarkMode()">
+                        <span>Change theme</span>
+                    </button>
+                    <button id="submit" class="btn btn-primary text-right" type="button" onclick="uploadSnippet()">
+                        <span>Upload</span>
+                    </button>
+                </form>
+                <div class="navbar-content d-md-none ml-auto"> <!-- d-md-none = display: none on medium screens and up (width > 768px), ml-auto = margin-left: auto -->
+                    <div class="dropdown with-arrow">
+                        <button class="btn" data-toggle="dropdown" type="button" id="navbar-dropdown-toggle-btn-1">
+                            Menu
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right w-200" aria-labelledby="navbar-dropdown-toggle-btn-1"> <!-- w-200 = width: 20rem (200px) -->
+                            <a class="dropdown-item" href="#modal-3">About</a>
+                            <a class="dropdown-item" href="mailto:contact@shitzuu.dev">Contact</a>
+                            <a id="theme-toggler" class="dropdown-item" href="#" onclick="halfmoon.toggleDarkMode()">Change theme</a>
+                            <a id="submit" class="dropdown-item" href="#" onclick="uploadSnippet()">Upload</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="content-wrapper h-full w-full align-content-center align-items-center text-center">
+                <textarea autofocus id="content" spellcheck="false" class="form-control p-10" style="height: 95% !important; width: 100% !important; border: none; outline: none" placeholder="Here you should put content of your snippet..."></textarea>
+            </div>
+        </div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
+        <script type="text/javascript">
+            function uploadSnippet() {
+                if (document.getElementById('content').value) {
+                    fetch("/api/v1/snippets/", { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: document.getElementById('content').value })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 200) {
+                                    location.href = '/snippet/' + data.identifier;
+                                } else {
+                                    halfmoon.initStickyAlert({
+                                        title: 'Error',
+                                        content: data.status + ": " + data.content,
+                                    });
+                                }
+                            });
+                } else {
+                    halfmoon.initStickyAlert({
+                        title: 'Error',
+                        content: 'You can\'t upload empty snippet.'
+                    });
+                }
+            }
+        </script>
+    </body>
+</html>
