@@ -1,6 +1,5 @@
 function uploadSnippet() {
     const content = document.getElementById('content');
-    const language = document.getElementById('language');
     if (!(content.value)) {
         halfmoon.initStickyAlert({
             title: 'Error',
@@ -9,10 +8,11 @@ function uploadSnippet() {
         return;
     }
 
+    const language = document.getElementById('language');
     if (!(language.value)) {
         halfmoon.initStickyAlert({
             title: 'Error',
-            content: 'Not selected language.'
+            content: 'You can\'t upload snippet without selecting language.'
         });
         return;
     }
