@@ -13,6 +13,9 @@ public class Snippet {
     @Column(nullable = false)
     private String identifier;
 
+    @Column(nullable = false)
+    private String language;
+
     @Column(nullable = false, columnDefinition = "TEXT", length = 65535)
     private String content;
 
@@ -33,6 +36,14 @@ public class Snippet {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getContent() {

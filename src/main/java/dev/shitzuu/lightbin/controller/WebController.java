@@ -27,7 +27,9 @@ public class WebController {
 
     @GetMapping("/snippet/{id}")
     public ModelAndView getSnippetView(@PathVariable("id") String identifier) {
-        return this.getSnippetView(identifier, "plaintext");
+        return snippetService.getSnippet(identifier)
+                .map(snippet -> new ModelAndView("snippet", Map.of("snippet", snippet, "language", snippet.getLanguage())))
+                .orElseGet(() -> new ModelAndView("index"));
     }
 
     @GetMapping("/snippet/{id}/{language}")

@@ -70,10 +70,10 @@ public class SnippetController {
     })
     @PostMapping(value = "/api/v1/snippets", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createSnippet(@RequestBody String content) throws JsonProcessingException {
-        return this.createSnippet(UUID.randomUUID().toString(), content);
+        return this.createSnippet(UUID.randomUUID().toString(), content, "plaintext");
     }
 
-    @Operation(summary = "Creates snippet with specified id")
+    @Operation(summary = "Creates snippet with random id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Snippet has been created", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Snippet is empty", content = @Content(mediaType = "application/json")),
@@ -81,8 +81,21 @@ public class SnippetController {
             @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
-    @PostMapping(value = "/api/v1/snippets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createSnippet(@PathVariable("id") String identifier, @RequestBody String content) throws JsonProcessingException {
+    @PostMapping(value = "/api/v1/snippets/{language}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createSnippet(@RequestBody String content, @PathVariable String language) throws JsonProcessingException {
+        return this.createSnippet(UUID.randomUUID().toString(), content, language);
+    }
+
+    @Operation(summary = "Creates snippet with specified id and language")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Snippet has been created", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Snippet is empty", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "409", description = "Snippet with this id already exists", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "429", description = "Too many requests", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    })
+    @PostMapping(value = "/api/v1/snippets/{id}/{language}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createSnippet(@PathVariable("id") String identifier, @RequestBody String content, @PathVariable String language) throws JsonProcessingException {
         if (bucket.tryConsume(1)) {
             if (content == null || content.isEmpty()) {
                 return ResponseEntity.status(400)
@@ -111,6 +124,7 @@ public class SnippetController {
 
             Snippet snippet = new Snippet();
             snippet.setIdentifier(identifier);
+            snippet.setLanguage(language);
             snippet.setContent(content);
             snippet.setCreatedAt(Instant.now());
 
@@ -118,6 +132,7 @@ public class SnippetController {
             return ResponseEntity.ok(objectMapper.writeValueAsString(objectMapper.createObjectNode()
                     .put("status", 200)
                     .put("identifier", identifier)
+                    .put("language", language)
                     .put("content", "Snippet created successfully")));
         }
         return ResponseEntity.status(429)

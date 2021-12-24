@@ -1,6 +1,7 @@
 function uploadSnippet() {
-    const element = document.getElementById('content');
-    if (!(element.value)) {
+    const content = document.getElementById('content');
+    const language = document.getElementById('language');
+    if (!(content.value)) {
         halfmoon.initStickyAlert({
             title: 'Error',
             content: 'You can\'t upload empty snippet.'
@@ -8,7 +9,15 @@ function uploadSnippet() {
         return;
     }
 
-    fetch("/api/v1/snippets/", { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: document.getElementById('content').value })
+    if (!(language.value)) {
+        halfmoon.initStickyAlert({
+            title: 'Error',
+            content: 'Not selected language.'
+        });
+        return;
+    }
+
+    fetch("/api/v1/snippets/" + language.value + "/", { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: document.getElementById('content').value })
         .then(response => response.json())
         .then(data => {
             // if everything is ok
