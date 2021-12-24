@@ -92,6 +92,14 @@ public class SnippetController {
                                 .put("content", "Content cannot be empty")));
             }
 
+            if (content.length() > 65535) {
+                return ResponseEntity.status(400)
+                        .body(objectMapper.writeValueAsString(objectMapper.createObjectNode()
+                                .put("status", 400)
+                                .put("identifier", identifier)
+                                .put("content", "Content cannot be longer than 65535 characters")));
+            }
+
             Optional<Snippet> optionalSnippet = snippetService.getSnippet(identifier);
             if (optionalSnippet.isPresent()) {
                 return ResponseEntity.status(409)

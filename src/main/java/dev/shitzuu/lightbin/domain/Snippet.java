@@ -13,7 +13,7 @@ public class Snippet {
     @Column(nullable = false)
     private String identifier;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT", length = 65535)
     private String content;
 
     @Column(nullable = false)
