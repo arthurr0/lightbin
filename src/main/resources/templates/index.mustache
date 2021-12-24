@@ -7,28 +7,42 @@
         <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet"/>
     </head>
     <body>
+        <div class="modal ie-scroll-fix" id="modal-2" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content w-600">
+                    <a href="#" class="close" role="button" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4>Contact</h4>
+                    <p>You can contact with me via mail: <a href="mailto:contact@shitzuu.dev">contact@shitzuu.dev</a></p>
+                </div>
+            </div>
+        </div>
         <div class="modal ie-scroll-fix" id="modal-3" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content w-600">
                     <a href="#" class="close" role="button" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </a>
-                    This website has been made by <a href="https://github.com/shitzuu">shitzuu</a> as a fun project to expand my knowledge about web development.
-                    <br>
-                    <br>
-                    You can post your snippets there, but you need to know that your snippets are not stored permanently, because this project can be turned off in any moment. Also, there is no currently any security implementation like JWT tokens to protect your snippet or something.
+                    <h4>About</h4>
+                    <p>You can post snippets there, but you are taking risk on your own, because there is no security features yet. Snippets uploaded there are available for everyone who is a known the identifier of the snippet.</p>
+                    <h4>Disclaimer</h4>
+                    <p>Snippets uploaded to the service are temporary stored in service's database, it can be deleted in every moment.</p>
+                    <h4>Author</h4>
+                    <p>This website has been made by <a href="https://github.com/shitzuu" target="_blank">shitzuu</a> as a fun project to expand my knowledge about web development.</p>
                 </div>
             </div>
         </div>
         <div class="page-wrapper with-navbar h-full w-full">
             <div class="sticky-alerts"></div>
             <nav class="navbar">
-                <a href="#" class="navbar-brand">
+                <a href="https://github.com/shitzuu/lightbin" target="_blank" class="navbar-brand">
                     <p>lightbin</p>
                 </a>
                 <form class="form-inline d-none d-md-flex mr-auto">
                     <button class="btn btn-primary text-left" onclick="location.href='#modal-3'" type="button">About</button>
-                    <button class="btn btn-primary text-left" onclick="location.href='mailto:contact@shitzuu.dev'" type="button">Contact</button>
+                    <button class="btn btn-primary text-left" onclick="document.getElementById('documentation-redirect').click()" type="button">Documentation</button>
+                    <button class="btn btn-primary text-left" onclick="location.href='#modal-2'" type="button">Contact</button>
                 </form>
                 <form class="form-inline d-none d-md-flex ml-auto">
                     <button id="theme-toggler" class="btn text-right" type="button" onclick="halfmoon.toggleDarkMode()">
@@ -46,7 +60,8 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right w-200" aria-labelledby="navbar-dropdown-toggle-btn-1"> <!-- w-200 = width: 20rem (200px) -->
                             <a class="dropdown-item" href="#modal-3">About</a>
-                            <a class="dropdown-item" href="mailto:contact@shitzuu.dev">Contact</a>
+                            <a class="dropdown-item" href="/documentation" target="_blank">Documentation</a>
+                            <a class="dropdown-item" href="#modal-2">Contact</a>
                             <a id="theme-toggler" class="dropdown-item" href="#" onclick="halfmoon.toggleDarkMode()">Change theme</a>
                             <a id="submit" class="dropdown-item" href="#" onclick="uploadSnippet()">Upload</a>
                             <div class="dropdown-divider"></div>
@@ -58,6 +73,7 @@
                 <textarea autofocus id="content" spellcheck="false" class="form-control p-10" style="height: 95% !important; width: 100% !important; border: none; outline: none" placeholder="Here you should put content of your snippet..."></textarea>
             </div>
         </div>
+        <a id="documentation-redirect" href="/documentation" target="_blank"></a>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
         <script type="text/javascript">
             function uploadSnippet() {
