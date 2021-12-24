@@ -68,7 +68,7 @@ class LightbinApplicationTests {
         mockMvc.perform(post("/api/v1/snippets/123abc").content("Hello World"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(result -> mockMvc.perform(get("/api/v1/snippets/123abc"))
+                .andDo(result -> mockMvc.perform(get("/snippet/123abc"))
                         .andDo(print())
                         .andExpect(status().isOk()));
     }
@@ -78,7 +78,7 @@ class LightbinApplicationTests {
         mockMvc.perform(post("/api/v1/snippets/123abc").content("Hello World"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(result -> mockMvc.perform(get("/api/v1/snippets/123abc/java"))
+                .andDo(result -> mockMvc.perform(get("/snippet/123abc/java"))
                         .andDo(print())
                         .andExpect(status().isOk()));
     }
