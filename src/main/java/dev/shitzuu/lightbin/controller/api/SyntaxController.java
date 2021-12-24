@@ -68,6 +68,9 @@ public class SyntaxController {
                 .add("ts")
                 .add("vala")
                 .add("yml")
-                .add("yaml")));
+                .add("yaml")
+                .add("markdown")
+                .add("md")
+                .add("properties")));
     }
 }
